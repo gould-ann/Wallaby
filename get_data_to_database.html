@@ -1,0 +1,86 @@
+//html form
+<div id="contact_form">
+<form action="contact_insert.php"     method="post">
+Firstname: <input type="text" name="firstname">
+Lastname: <input type="text" name="surname">
+Reps: <input type="int" reps = "reps">
+Times per Week: <input type="int" times = "times">
+<input type="submit">
+</form>
+</div> 
+
+
+//php contact_insert.php page
+<?php
+
+$username="root";
+$password="password";
+$server="127.0.0.1";
+$database="eddiesdb";
+
+$con = mysql_connect($server,$username,$password);
+// Check connection
+if (mysql_connect_errno())
+  {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  }
+
+$sql="INSERT INTO customer (FirstName, Surname, EmailAddress)
+VALUES
+('$_POST[firstname]','$_POST[surname]','$_POST[email]')";
+
+if (!mysqli_query($con,$sql))
+  {
+  die('Error: ' . mysqli_error($con));
+  }
+    echo "1 record added";
+
+mysqli_close($con);
+
+?> 
+<!DOCTYPE HTML>
+<html>
+<head>  
+  <script type="text/javascript">
+  window.onload = function () {
+    var exercises = new Array("Squat Progress", "Pushup Progress", "Pullup Progress");
+    var stored_scores = new Array(200, 220, 990, 500, 47, 570, 208, 187, 648, 199);
+    var days = new Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    function generateDataPoints() {
+    var i,
+        arr = [];
+
+    for (i = 0; i < stored_scores.length; i++) {
+        arr.push({
+            x: days[i]},
+            {y: stored_scores[i]
+        });
+    }
+    return arr;
+}
+    var data_arr = generateDataPoints()
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      animationEnabled: true,
+      theme: "dark2",    // "light1", "dark1", "dark2"
+      title:{
+       text: exercises[1]
+      },
+      data: [
+      {        
+        type: "column",
+        dataPoints: data_arr
+      }
+      ]
+    });
+
+    chart.render();
+  }
+  </script>
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</head>
+<body>
+  <div id="chartContainer" style="height: 800px; width: 100%;">
+  </div>
+</body>
+</html>
