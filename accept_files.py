@@ -10,3 +10,4 @@ form = cgi.FieldStorage()
 if "file" in form.keys():
 	files = form["file"]
 	print files.filename, files.name, files.value
+	open('/tmp/' + files.filename, 'wb').write(files.value.read())
