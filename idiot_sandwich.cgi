@@ -11,7 +11,7 @@ form = cgi.FieldStorage()
 print "Content-Type: text/html"     # HTML is following
 print ""                            # blank line, end of headers
 
-id_num = form["id"].value
-print form["username"]
+user = form["user"].value
+print form["words"]
 
 server_names = []
