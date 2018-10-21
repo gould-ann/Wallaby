@@ -9,8 +9,8 @@ hog = cv.HOGDescriptor()
 hog.setSVMDetector(cv.HOGDescriptor_getDefaultPeopleDetector())
 
 fgbg = cv.createBackgroundSubtractorMOG2()
-MIN_CONTOUR_AREA = 25
-LOWER_BOUND = 127
+MIN_CONTOUR_AREA = 50
+LOWER_BOUND = 100
 
 
 trackerTypes = ['BOOSTING', 'MIL', 'KCF','TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE', 'CSRT']
@@ -150,7 +150,7 @@ while(1):
                              
                             # Create MultiTracker object
                             multiTracker.add(createTrackerByName(trackerType), res, bbox)
-                        if seen_knee and seen_butt and not seen_shoes and len(boxes) == 2:
+                        if seen_knee and seen_butt and not seen_shoes and len(boxes) == 2 and abs(boxes[0][1] - boxes[1][1]) > 50:
                             diff_x = abs(boxes[0][0] - boxes[1][0])
                             if diff_x < 40:
                                 seen_shoes = True
@@ -158,7 +158,6 @@ while(1):
                                 foot_y = 1.9*boxes[1][1] - boxes[0][1]
                                 foot = [foot_x, foot_y]
                                 # multiTracker.add(createTrackerByName(trackerType), res, (foot_x-10, foot_y-10, 20, 20))
-
 
                         # rows,cols = res.shape[:2]
                         # [vx,vy,x,y] = cv.fitLine(contour, cv.DIST_L2,0,0.01,0.01)
@@ -183,15 +182,25 @@ while(1):
     #     print "here:", newbox
     #     cv.circle(res, (int(newbox[0]+newbox[2]/2), int(newbox[1]+newbox[3]/2)), 10, (0,0,255), thickness=-1)
         # cv.rectangle(res, p1, p2, (255,0,255), 2, -1)
+    last_x = None
+    lasst_y = None
     if len(boxes) >= 2:
         for i, newbox in enumerate(boxes):
             cv.circle(res, (int(newbox[0]+newbox[2]/2), int(newbox[1]+newbox[3]/2)), 10, (0,0,255), thickness=-1)
+            
+            if last_x != None and abs(last_x-int(newbox[0]+newbox[2]/2)) > 100:
+                multiTracker = cv.MultiTracker_create()
+                seen_butt, seen_shoes, seen_knee = False, False, False
+            last_x = int(newbox[0]+newbox[2]/2)
+            # if lasst_y != None and abs(last_x-int(newbox[0]+newbox[2]/2)) > 150:
+            #     multiTracker = cv.MultiTracker_create()
+
+
             if i+1 < len(boxes):
                 cv.line(res, (int(boxes[i][0]+boxes[i][2]/2), int(boxes[i][1]+boxes[i][3]/2)), (int(boxes[i+1][0]+boxes[i+1][2]/2), int(boxes[i+1][1]+boxes[i+1][3]/2)), (255,100,50), 5)
             elif foot:
                 cv.circle(res, (int(foot[0]), int(foot[1])), 10, (0,0,255), thickness=-1)
                 cv.line(res, (int(boxes[i][0]+boxes[i][2]/2), int(boxes[i][1]+boxes[i][3]/2)), (int(foot[0]), int(foot[1])), (255,100,50), 5)
-
 
     # if len(slopes) > 0:
     #     avg_slope = sum(slopes)/len(slopes)

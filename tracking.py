@@ -1,7 +1,10 @@
 from __future__ import print_function
+import urllib2
 import sys
 import cv2
 from random import randint
+from os import listdir
+from os.path import isfile, join
  
 trackerTypes = ['BOOSTING', 'MIL', 'KCF','TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE', 'CSRT']
  
@@ -33,9 +36,15 @@ def createTrackerByName(trackerType):
     return tracker
 
 
-
+mypath = "."
+onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f)) and ".mov" in f]
+videoPath = onlyfiles[0]
+print("Path: ", videoPath)
+name = videoPath.split(".")[0].split("-")[0]
+type = videoPath.split(".")[0].split("-")[1]
+date = videoPath.split(".")[0].split("-")[2]
 # Set video to load
-videoPath = "/Users/devinuner/Desktop/ann1.mov"
+# videoPath = "/Users/devinuner/Desktop/ann1.mov"
  
 # Create a video capture object to read videos
 cap = cv2.VideoCapture(videoPath)
@@ -80,7 +89,7 @@ print('Selected bounding boxes {}'.format(bboxes))
 # Specify the tracker type
 trackerType = "CSRT"   
  
-# Create MultiTracker object
+# Create MultiTracker objectf
 multiTracker = cv2.MultiTracker_create()
  
 # Initialize MultiTracker 
@@ -123,6 +132,7 @@ while cap.isOpened():
     if angle_1 < 3 and good and in_rep:
         good = False
         print("BAD JOB!!!")
+        num_reps -= 1
     if angle_1 > 5 and not good:
         good = True
  
@@ -133,3 +143,6 @@ while cap.isOpened():
     # quit on ESC button
     if cv2.waitKey(1) & 0xFF == 27:  # Esc pressed
         break
+
+print(num_reps)
+contents = urllib2.urlopen("http://ec2-18-222-115-164.us-east-2.compute.amazonaws.com/cgi-bin/webhook.cgi?name=Ann%20Gould&reps=" + str(num_reps) + "&exercise=squats&date=17830").read()
