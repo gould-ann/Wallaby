@@ -1,0 +1,22 @@
+var data = [{  "patient": {
+    "name": "Ann Gould",
+    "DOB": "04.23.1998",
+    "data": {
+      "diagnosis": "knee-hyperextension",
+      "exercises": [
+        {
+          "exercise": "squats",
+          "reps": "5"
+        },
+        {
+          "exercise": "squats",
+          "reps": "5"
+        },
+        {
+          "exercise": "lunges",
+          "reps": "8"
+        }
+      ]
+    }
+  }
+}]

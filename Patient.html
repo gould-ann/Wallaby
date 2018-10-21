@@ -50,13 +50,13 @@
       var valid = false;
 
       //for(i=0; i<nameArr.length; i++) {
-        if(document.forms["form"]["txtName"].value != null) {
+        if(document.forms["form"]["txtName"].value == "Ann" || document.forms["form"]["txtName"].value == "Ann Gould") {
           valid = true
-          window.location.href="http://www.google.com";
+          window.location.href="Patient_upload.html";
         }
     //  }
       if(!valid) {
-          alert("Please type a name");
+          alert("Please type a valid name");
           document.forms["form"]["txtName"].value = "";
       }
     }

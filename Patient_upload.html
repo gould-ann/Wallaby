@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <h1>Place for patients to upload their videos</h1>
+  <h1>Welcome Ann Gould</h1>
+<script src="data.json"></script>
 
 </head>
 
-<body>
+<body onload=“updateMe()“>
 
+
+<p id=“name”></p>
+<p id=“DOB”></p>
+
+  <script type=“text/javascript”>
+        function updateMe() {
+          var x = 0;
+          var activity = data;
+          console.log(activity);
+          var name = document.getElementById(“name”).innerHTML = activity[0][“patient”][“name”];
+          var dob = document.getElementById(“DOB”).innerHTML = activity[0][“patient”][“DOB”];
+
+        }
+      </script>
 </body>
 
 </html>
