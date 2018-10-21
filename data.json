@@ -5,14 +5,17 @@ var data = [{  "patient": {
       "diagnosis": "knee-hyperextension",
       "exercises": [
         {
+          "date": "17825",
           "exercise": "squats",
           "reps": "5"
         },
         {
+          "date": "17826",
           "exercise": "squats",
           "reps": "5"
         },
         {
+          "date": "17826",
           "exercise": "lunges",
           "reps": "8"
         }
